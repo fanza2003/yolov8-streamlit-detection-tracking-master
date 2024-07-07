@@ -79,5 +79,5 @@ urllib3==2.2.1
 watchdog==4.0.0
 bcrypt==3.2.0
 mysql-connector-python==8.0.28
-streamlit_authenticator==1.0.0  # Replace with actual version if different
+streamlit_authenticator==1.0.0  
 
