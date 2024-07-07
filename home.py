@@ -48,7 +48,14 @@ if authentication_status:
         st.title("Apple Detection")
 
         # Sidebar
-        authenticator.logout("Logout", "sidebar")
+        if st.sidebar.button("Logout"):
+            st.session_state['authentication_status'] = None
+            st.session_state['name'] = None
+            st.session_state['username'] = None
+            if cookie_name in authenticator.cookie_manager.cookies:
+                authenticator.cookie_manager.delete(cookie_name)
+            st.experimental_rerun()
+
         st.sidebar.title(f"Welcome {name}")
         st.sidebar.header("🍎INDONESIAN APPLE")
 
@@ -232,10 +239,10 @@ if authentication_status:
             }
             [data-testid="stSidebar"] {
                 background-color: #FFA62F;
-                color: #000000;
+                color: #000000.
             }
             [data-testid="stSidebar"] img {
-                background-color: #FFA62F;
+                background-color: #FFA62F.
             }
             </style>
             """, unsafe_allow_html=True)
