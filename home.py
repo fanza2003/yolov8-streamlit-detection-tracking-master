@@ -179,6 +179,9 @@ def main():
         [data-testid="stExpander"] {
             background-color: #2E2E2E;
         }
+        [data-testid="stSidebar"] img {
+            background-color: #333333;
+        }
         </style>
         """, unsafe_allow_html=True)
     else:
@@ -196,9 +199,13 @@ def main():
             background-color: #FFA62F;
             color: #000000;
         }
+        [data-testid="stSidebar"] img {
+            background-color: #FFA62F;
+        }
         </style>
         """, unsafe_allow_html=True)
-        st.sidebar.image("images/poon.png", use_column_width=True,)
+
+    st.sidebar.image("images/poon.png", use_column_width=True)
 
 if __name__ == "__main__":
     main()
