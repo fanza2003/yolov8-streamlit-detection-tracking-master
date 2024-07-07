@@ -15,7 +15,6 @@ def main():
     st.title("Apple Detection")
 
     # Sidebar
-    st.sidebar.image("images/poon.png", use_column_width=True)
     st.sidebar.header("🍎INDONESIAN APPLE")
 
     # Menu Options using radio buttons with icons
@@ -199,6 +198,7 @@ def main():
         }
         </style>
         """, unsafe_allow_html=True)
+        st.sidebar.image("images/poon.png", use_column_width=True,)
 
 if __name__ == "__main__":
     main()
