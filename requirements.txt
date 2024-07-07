@@ -79,4 +79,5 @@ watchdog==4.0.0
 bcrypt==3.2.0
 mysql-connector-python==8.0.28
 streamlit_authenticator==1.0.0  
+streamlit==0.91.0
 
