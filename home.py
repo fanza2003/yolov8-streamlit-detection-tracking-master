@@ -1,5 +1,6 @@
 from pathlib import Path
 import pickle
+import hashlib
 import PIL
 import streamlit as st
 
@@ -15,28 +16,20 @@ st.set_page_config(
 import settings
 import helper
 
-# --- USER AUTHENTICATION ---
-# Hardcoded usernames and hashed passwords (for demonstration purposes)
-users = {
-    "Admin": "",
-    "Rebecca Miller": ""
-}
-
-def authenticate(username, password):
-    if username in users:
-        if password == "main":  # This is a placeholder for the password "main"
-            return True
-    return False
-
-    # Load hashed passwords
+# Load hashed passwords
 file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
+    
+def authenticate(username, password):
+    if username in hashed_passwords:
+        hashed_pw = hashlib.sha256(password.encode()).hexdigest()
+        if hashed_pw == hashed_passwords[username]:
+            return True
+    return False
 
 def main():
     st.title("Apple Detection")
-
-    
 
     # Authentication Section
     st.subheader("Login")
