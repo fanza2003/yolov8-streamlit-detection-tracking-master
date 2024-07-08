@@ -16,14 +16,18 @@ st.set_page_config(
 import settings
 import helper
 
-# --- USER AUTHENTICATION ---
+# Define your usernames and passwords
 names = ["Admin", "Rebecca Miller"]
 usernames = ["Admin", "rmiller"]
+passwords = ["your_admin_password", "your_rebecca_password"]
 
-# Load hashed passwords
+# Hash the passwords
+hashed_passwords = stauth.Hasher(passwords).generate()
+
+# Save hashed passwords to a file
 file_path = Path(__file__).parent / "hashed_pw.pkl"
-with file_path.open("rb") as file:
-    hashed_passwords = pickle.load(file)
+with file_path.open("wb") as file:
+    pickle.dump(hashed_passwords, file)
 
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 
                                     cookie_name="aiueo", key="some_random_key", cookie_expiry_days=None)
