@@ -1,8 +1,8 @@
 from pathlib import Path
 import pickle
-import hashlib
-import streamlit as st
 import PIL
+import streamlit as st
+import streamlit_authenticator as stauth
 
 # Setting page layout
 st.set_page_config(
@@ -16,36 +16,47 @@ st.set_page_config(
 import settings
 import helper
 
+# --- USER AUTHENTICATION ---
+names = ["Admin", "Rebecca Miller"]
+usernames = ["Admin", "rmiller"]
+
 # Load hashed passwords
 file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 
-# Authenticate function
-def authenticate(username, password):
-    if username in hashed_passwords:
-        hashed_pw = hashlib.sha256(password.encode()).hexdigest()
-        if hashed_pw == hashed_passwords[username]:
-            return True
-    return False
+# Initialize authenticator with proper cookie name
+cookie_name = "apple_detection"
+authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
+                                    cookie_name, "aiueo", cookie_expiry_days=30)
 
-def main():
-    st.title("Apple Detection")
+name, authentication_status, username = authenticator.login("login🍎", "main")
 
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+if authentication_status == False:
+    st.error("Username/password is incorrect")
 
-    if st.button("Login"):
-        if authenticate(username, password):
-            st.success(f"Logged in as {username}")
-            st.session_state['authentication_status'] = True
-            st.session_state['name'] = username
-            st.session_state['username'] = username
-        else:
-            st.error("Invalid username or password")
+if authentication_status == None:
+    st.warning("Please enter your username and password")
 
-    if st.session_state.get('authentication_status'):
-        st.sidebar.title(f"Welcome {st.session_state['name']}")
+if authentication_status:
+    def main():
+        # Initialize dark mode session state if not already set
+        if 'dark_mode' not in st.session_state:
+            st.session_state.dark_mode = False
+
+        # Main page heading
+        st.title("Apple Detection")
+
+        # Sidebar
+        if st.sidebar.button("Logout"):
+            st.session_state['authentication_status'] = None
+            st.session_state['name'] = None
+            st.session_state['username'] = None
+            if cookie_name in authenticator.cookie_manager.cookies:
+                authenticator.cookie_manager.delete(cookie_name)
+            st.experimental_rerun()
+
+        st.sidebar.title(f"Welcome {name}")
         st.sidebar.header("🍎INDONESIAN APPLE")
 
         # Menu Options using radio buttons with icons
@@ -238,5 +249,5 @@ def main():
 
         st.sidebar.image("images/poon.png", use_column_width=True)
 
-if __name__ == "__main__":
-    main()
+    if __name__ == "__main__":
+        main()
