@@ -53,7 +53,7 @@ if authentication_status:
             st.session_state['name'] = None
             st.session_state['username'] = None
             authenticator.cookie_manager.delete(cookie_name)
-            st.experimental_rerun()
+            st.rerun()
 
         st.sidebar.title(f"Welcome {name}")
         st.sidebar.header("🍎INDONESIAN APPLE")
