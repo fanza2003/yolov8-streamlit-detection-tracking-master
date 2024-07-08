@@ -40,10 +40,6 @@ if authentication_status == None:
 
 if authentication_status:
     def main():
-        # Initialize dark mode session state if not already set
-        if 'dark_mode' not in st.session_state:
-            st.session_state.dark_mode = False
-
         # Main page heading
         st.title("Apple Detection")
 
@@ -184,64 +180,6 @@ if authentication_status:
                             st.write(box.data)
             else:
                 st.write("No detection history available.")
-
-        # Add a toggle switch for dark mode in the sidebar at the bottom
-        st.sidebar.markdown("---")
-        st.session_state.dark_mode = st.sidebar.checkbox('Dark Mode', value=st.session_state.dark_mode)
-
-        # Add the text below the Dark Mode checkbox
-        if st.session_state.dark_mode:
-            st.sidebar.markdown("""
-            <p style="color: white; font-size: 12px;">❗use when streamlit in darkmode❗</p>
-            """, unsafe_allow_html=True)
-
-            st.markdown("""
-            <style>
-            [data-testid="stAppViewContainer"] {
-                background-color: #1E1E1E;
-                color: #FFFFFF;
-            }
-            [data-testid="stSidebar"] {
-                background-color: #333333;
-                color: #FFFFFF;
-            }
-            [data-testid="stHeader"] {
-                background-color: #333333;
-            }
-            [data-testid="stMarkdownContainer"] {
-                color: #FFFFFF;
-            }
-            [data-testid="stImage"] {
-                background-color: #1E1E1E;
-            }
-            [data-testid="stExpander"] {
-                background-color: #2E2E2E;
-            }
-            [data-testid="stSidebar"] img {
-                background-color: #333333;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-        else:
-            st.sidebar.markdown("""
-            <p style="color: black; font-size: 12px;">❗use when streamlit in darkmode❗</p>
-            """, unsafe_allow_html=True)
-
-            st.markdown("""
-            <style>
-            [data-testid="stAppViewContainer"] {
-                background-color: #ffffe0;
-                color: #000000;
-            }
-            [data-testid="stSidebar"] {
-                background-color: #FFA62F;
-                color: #000000.
-            }
-            [data-testid="stSidebar"] img {
-                background-color: #FFA62F.
-            }
-            </style>
-            """, unsafe_allow_html=True)
 
         st.sidebar.image("images/poon.png", use_column_width=True)
 
