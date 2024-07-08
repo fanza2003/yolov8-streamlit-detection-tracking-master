@@ -25,10 +25,9 @@ file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 
-# Initialize authenticator with proper cookie name
-cookie_name = "apple_detection"
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
-                                    cookie_name, "aiueo", cookie_expiry_days=None)
+
+authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 
+                                    cookie_name="aiueo", key=None, cookie_expiry_days=None)
 
 name, authentication_status, username = authenticator.login("login🍎", "main")
 
@@ -52,8 +51,6 @@ if authentication_status:
             st.session_state['authentication_status'] = None
             st.session_state['name'] = None
             st.session_state['username'] = None
-            if cookie_name in authenticator.cookie_manager.cookies:
-                authenticator.cookie_manager.delete(cookie_name)
             st.experimental_rerun()
 
         st.sidebar.title(f"Welcome {name}")
