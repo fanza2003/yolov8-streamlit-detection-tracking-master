@@ -16,39 +16,29 @@ st.set_page_config(
 import settings
 import helper
 
-# Define your usernames and passwords
+# --- USER AUTHENTICATION ---
 names = ["Admin", "Rebecca Miller"]
 usernames = ["Admin", "rmiller"]
-passwords = ["your_admin_password", "your_rebecca_password"]
 
-# Hash the passwords
-hashed_passwords = stauth.Hasher(passwords).generate()
-
-# Save hashed passwords to a file
+# Load hashed passwords
 file_path = Path(__file__).parent / "hashed_pw.pkl"
-with file_path.open("wb") as file:
-    pickle.dump(hashed_passwords, file)
+with file_path.open("rb") as file:
+    hashed_passwords = pickle.load(file)
 
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 
-                                    cookie_name="aiueo", key="some_random_key", cookie_expiry_days=None)
+# Initialize authenticator with proper cookie name
+cookie_name = "apple_detection"
+authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
+                                    cookie_name, "aiueo", cookie_expiry_days=30)
 
-# Check if 'authentication_status' is in session state
-if 'authentication_status' not in st.session_state:
-    st.session_state['authentication_status'] = None
+name, authentication_status, username = authenticator.login("login🍎", "main")
 
-# Display the login widget
-name, authentication_status, username = authenticator.login("Login 🍎", "main")
-
-# Update session state based on authentication status
-st.session_state['authentication_status'] = authentication_status
-st.session_state['name'] = name
-st.session_state['username'] = username
-
-if st.session_state['authentication_status'] is False:
+if authentication_status == False:
     st.error("Username/password is incorrect")
-elif st.session_state['authentication_status'] is None:
+
+if authentication_status == None:
     st.warning("Please enter your username and password")
-else:
+
+if authentication_status:
     def main():
         # Initialize dark mode session state if not already set
         if 'dark_mode' not in st.session_state:
@@ -62,9 +52,11 @@ else:
             st.session_state['authentication_status'] = None
             st.session_state['name'] = None
             st.session_state['username'] = None
+            if cookie_name in authenticator.cookie_manager.cookies:
+                authenticator.cookie_manager.delete(cookie_name)
             st.experimental_rerun()
 
-        st.sidebar.title(f"Welcome {st.session_state['name']}")
+        st.sidebar.title(f"Welcome {name}")
         st.sidebar.header("🍎INDONESIAN APPLE")
 
         # Menu Options using radio buttons with icons
