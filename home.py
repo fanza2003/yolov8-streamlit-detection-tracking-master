@@ -39,7 +39,7 @@ if 'authentication_status' not in st.session_state:
     st.session_state['name'] = None
 
 if st.session_state['authentication_status'] != True:
-    st.header("Login")
+    st.header("Login🍎")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
