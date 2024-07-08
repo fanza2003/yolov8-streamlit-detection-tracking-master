@@ -49,11 +49,7 @@ if authentication_status:
 
         # Sidebar
         if st.sidebar.button("Logout"):
-            st.session_state['authentication_status'] = None
-            st.session_state['name'] = None
-            st.session_state['username'] = None
-            if cookie_name in authenticator.cookie_manager.cookies:
-                authenticator.cookie_manager.delete(cookie_name)
+            authenticator.logout('Logout', 'main')
             st.experimental_rerun()
 
         st.sidebar.title(f"Welcome {name}")
