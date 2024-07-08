@@ -18,7 +18,7 @@ import helper
 
 # --- USER AUTHENTICATION ---
 names = ["Admin", "Rebecca Miller"]
-usernames = ["Admin123", "rmiller"]
+usernames = ["admin", "rmiller"]
 
 # Load hashed passwords
 file_path = Path(__file__).parent / "hashed_pw.pkl"
