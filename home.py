@@ -25,19 +25,26 @@ file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 
-
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 
-                                    cookie_name="aiueo", key=None, cookie_expiry_days=None)
+                                    cookie_name="aiueo", key="some_random_key", cookie_expiry_days=None)
 
-name, authentication_status, username = authenticator.login("login🍎", "main")
+# Check if 'authentication_status' is in session state
+if 'authentication_status' not in st.session_state:
+    st.session_state['authentication_status'] = None
 
-if authentication_status == False:
+# Display the login widget
+name, authentication_status, username = authenticator.login("Login 🍎", "main")
+
+# Update session state based on authentication status
+st.session_state['authentication_status'] = authentication_status
+st.session_state['name'] = name
+st.session_state['username'] = username
+
+if st.session_state['authentication_status'] is False:
     st.error("Username/password is incorrect")
-
-if authentication_status == None:
+elif st.session_state['authentication_status'] is None:
     st.warning("Please enter your username and password")
-
-if authentication_status:
+else:
     def main():
         # Initialize dark mode session state if not already set
         if 'dark_mode' not in st.session_state:
@@ -53,7 +60,7 @@ if authentication_status:
             st.session_state['username'] = None
             st.experimental_rerun()
 
-        st.sidebar.title(f"Welcome {name}")
+        st.sidebar.title(f"Welcome {st.session_state['name']}")
         st.sidebar.header("🍎INDONESIAN APPLE")
 
         # Menu Options using radio buttons with icons
