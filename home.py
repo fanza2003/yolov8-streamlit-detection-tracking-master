@@ -27,7 +27,7 @@ with file_path.open("rb") as file:
 
 
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 
-                                    cookie_name=None, key=None, cookie_expiry_days=None)
+                                    cookie_name="aiueo", key=None, cookie_expiry_days=None)
 
 name, authentication_status, username = authenticator.login("login🍎", "main")
 
