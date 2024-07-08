@@ -25,16 +25,22 @@ file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 
-
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 
-                                    cookie_name="aiueo", key=None, cookie_expiry_days=None)
+# Initialize the authenticator without cookies
+authenticator = stauth.Authenticate(
+    names, 
+    usernames, 
+    hashed_passwords, 
+    cookie_name=None, 
+    key=None, 
+    cookie_expiry_days=None
+)
 
 name, authentication_status, username = authenticator.login("login🍎", "main")
 
-if authentication_status == False:
+if authentication_status is False:
     st.error("Username/password is incorrect")
 
-if authentication_status == None:
+if authentication_status is None:
     st.warning("Please enter your username and password")
 
 if authentication_status:
