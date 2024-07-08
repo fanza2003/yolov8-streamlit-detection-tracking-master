@@ -1,8 +1,8 @@
-from pathlib import Path
-import pickle
+import sqlite3
+import hashlib
 import PIL
 import streamlit as st
-import streamlit_authenticator as stauth
+from pathlib import Path  # Add this import
 
 # Setting page layout
 st.set_page_config(
@@ -17,28 +17,42 @@ import settings
 import helper
 
 # --- USER AUTHENTICATION ---
-names = ["Admin", "Rebecca Miller"]
-usernames = ["admin", "rmiller"]
 
-# Load hashed passwords
-file_path = Path(__file__).parent / "hashed_pw.pkl"
-with file_path.open("rb") as file:
-    hashed_passwords = pickle.load(file)
+# Function to hash passwords
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
-# Initialize authenticator with proper cookie name
-cookie_name = "apple_detection"
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
-                                    cookie_name, "aiueo", cookie_expiry_days=30)
+# Function to verify user credentials
+def verify_user(username, password):
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("SELECT name, password FROM users WHERE username=?", (username,))
+    user = c.fetchone()
+    conn.close()
+    if user and user[1] == hash_password(password):
+        return user[0]
+    return None
 
-name, authentication_status, username = authenticator.login("login🍎", "main")
+if 'authentication_status' not in st.session_state:
+    st.session_state['authentication_status'] = None
+    st.session_state['username'] = None
+    st.session_state['name'] = None
 
-if authentication_status == False:
-    st.error("Username/password is incorrect")
-
-if authentication_status == None:
-    st.warning("Please enter your username and password")
-
-if authentication_status:
+if st.session_state['authentication_status'] != True:
+    st.header("Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        name = verify_user(username, password)
+        if name:
+            st.session_state['authentication_status'] = True
+            st.session_state['username'] = username
+            st.session_state['name'] = name
+            st.success("Logged in successfully")
+            st.experimental_rerun()
+        else:
+            st.error("Username/password is incorrect")
+else:
     def main():
         # Initialize dark mode session state if not already set
         if 'dark_mode' not in st.session_state:
@@ -52,11 +66,9 @@ if authentication_status:
             st.session_state['authentication_status'] = None
             st.session_state['name'] = None
             st.session_state['username'] = None
-            if cookie_name in authenticator.cookie_manager.cookies:
-                authenticator.cookie_manager.delete(cookie_name)
             st.experimental_rerun()
 
-        st.sidebar.title(f"Welcome {name}")
+        st.sidebar.title(f"Welcome {st.session_state['name']}")
         st.sidebar.header("🍎INDONESIAN APPLE")
 
         # Menu Options using radio buttons with icons
