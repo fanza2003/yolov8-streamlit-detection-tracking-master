@@ -26,7 +26,7 @@ with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 
-                                    "aiueo", cookie_expiry_days=30)
+                                    cookie_name=None, key=None, cookie_expiry_days=None)
 
 name, authentication_status, username = authenticator.login("login🍎", "main")
 
@@ -50,8 +50,6 @@ if authentication_status:
             st.session_state['authentication_status'] = None
             st.session_state['name'] = None
             st.session_state['username'] = None
-            if "aiueo" in authenticator.cookie_manager.cookies:
-                authenticator.cookie_manager.delete("aiueo")
             st.experimental_rerun()
 
         st.sidebar.title(f"Welcome {name}")
