@@ -25,6 +25,7 @@ file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 
+
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 
                                     cookie_name=None, key=None, cookie_expiry_days=None)
 
@@ -203,22 +204,22 @@ if authentication_status:
             }
             [data-testid="stSidebar"] {
                 background-color: #333333;
-                color: #FFFFFF.
+                color: #FFFFFF;
             }
             [data-testid="stHeader"] {
-                background-color: #333333.
+                background-color: #333333;
             }
             [data-testid="stMarkdownContainer"] {
-                color: #FFFFFF.
+                color: #FFFFFF;
             }
             [data-testid="stImage"] {
-                background-color: #1E1E1E.
+                background-color: #1E1E1E;
             }
             [data-testid="stExpander"] {
-                background-color: #2E2E2E.
+                background-color: #2E2E2E;
             }
             [data-testid="stSidebar"] img {
-                background-color: #333333.
+                background-color: #333333;
             }
             </style>
             """, unsafe_allow_html=True)
@@ -231,7 +232,7 @@ if authentication_status:
             <style>
             [data-testid="stAppViewContainer"] {
                 background-color: #ffffe0;
-                color: #000000.
+                color: #000000;
             }
             [data-testid="stSidebar"] {
                 background-color: #FFA62F;
