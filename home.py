@@ -28,7 +28,7 @@ with file_path.open("rb") as file:
 # Initialize authenticator with proper cookie name
 cookie_name = "apple_detection"
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
-                                    cookie_name, "aiueo", cookie_expiry_days=30)
+                                    cookie_name, "aiueo",)
 
 name, authentication_status, username = authenticator.login("login🍎", "main")
 
