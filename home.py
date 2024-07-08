@@ -31,6 +31,11 @@ def authenticate(username, password):
 def main():
     st.title("Apple Detection")
 
+    # Load hashed passwords
+file_path = Path(__file__).parent / "hashed_pw.pkl"
+with file_path.open("rb") as file:
+    hashed_passwords = pickle.load(file)
+
     # Authentication Section
     st.subheader("Login")
     username = st.text_input("Username")
