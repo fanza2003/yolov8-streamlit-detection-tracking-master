@@ -18,8 +18,8 @@ import helper
 # --- USER AUTHENTICATION ---
 # Hardcoded usernames and hashed passwords (for demonstration purposes)
 users = {
-    "Admin": "hashed_admin_password",
-    "Rebecca Miller": "hashed_rebecca_password"
+    "Admin": "",
+    "Rebecca Miller": ""
 }
 
 def authenticate(username, password):
@@ -28,13 +28,15 @@ def authenticate(username, password):
             return True
     return False
 
-def main():
-    st.title("Apple Detection")
-
     # Load hashed passwords
 file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
+
+def main():
+    st.title("Apple Detection")
+
+    
 
     # Authentication Section
     st.subheader("Login")
